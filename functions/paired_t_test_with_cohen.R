@@ -3,7 +3,7 @@ library(dplyr)
 library(reshape)
 library(lsr) # for cohen's d
 
-apa.paired.t.test <- function (dfForComparsion) {
+paired.t.test.with.cohen <- function (dfForComparsion) {
 
   x=dfForComparsion[,1]
   y=dfForComparsion[,2]
