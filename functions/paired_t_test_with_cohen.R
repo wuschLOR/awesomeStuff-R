@@ -25,12 +25,18 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
   
   
   #p output bauen
-  px<-NULL
-  if(p> 0.05) px ='n.s.'
-  if(p< 0.05 ) px ='*'
-  if(p< 0.01 ) px ='**'
-  if(p< 0.001) px ='***'
+  sig<-NULL
+  if(p> 0.05)  sig ='n.s.'
+  if(p< 0.05 ) sig ='*'
+  if(p< 0.01 ) sig ='**'
+  if(p< 0.001) sig ='***'
   
+  # siglevel
+  siglevel<-NULL
+  if(p> 0.05)  siglevel ='>.05'
+  if(p< 0.05 ) siglevel ='<.05'
+  if(p< 0.01 ) siglevel ='<.01'
+  if(p< 0.001) siglevel ='<.001'
   
   
   
@@ -44,7 +50,8 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
                          , df        =df
                          , t         =t
                          , p         =p
-                         , sig       =px
+                         , sig       =sig
+                         , siglevel  =siglevel
                          , cohenD    =c
   )
   
@@ -52,11 +59,11 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
 #   # output generieren
 #   var1 = paste( colnames(dfForComparsion)[1] , '$ M=' , m.col1 , ', SD=' , sd.col1 , ' $' , sep='')
 #   var2 = paste( colnames(dfForComparsion)[2] , '$ M=' , m.col2 , ', SD=' , sd.col2 , ' $' , sep='')
-#   var3 = paste( '$ t(' , df , ')=', t , ',p<' , px , ',d=' , d , ' $' , sep='')
+#   var3 = paste( '$ t(' , df , ')=', t , ',p<' , sig , ',d=' , d , ' $' , sep='')
 #   var4 = paste( '$ t(' , df , ')=', t , ',p>.05'   , ',d=' , d , ' $' , sep='')
 #   
 #   #check if sig or not
-#   ifelse( is.null(px) , vprint<-var4 , vprint<-var3 )
+#   ifelse( is.null(sig) , vprint<-var4 , vprint<-var3 )
 #   output.df=data.frame( var1=var1 , var2=var2 , vprint=vprint)
 #   
 #   # noch hübsch benennen
