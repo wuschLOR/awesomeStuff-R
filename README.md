@@ -1,3 +1,6 @@
 # awesomeStuff-R
 awesome stuff for r
-# geilerSHIT
+# coole Funktionen
+
+* paired t test  with cohen 
+* adjust degree of freedom ezANOVA
