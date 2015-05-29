@@ -44,9 +44,11 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
   output.df<- data.frame(gr1.name    =colnames(dfForComparsion)[1] 
                          , gr1.m     =mean(x)
                          , gr1.sd    =sd(x)
+                         , gr1.se    =se(x)
                          , gr2.name  =colnames(dfForComparsion)[2]
                          , gr2.m     =mean(y)
                          , gr2.sd    =sd(y)
+                         , gr2.se    =se(x)
                          , df        =df
                          , t         =t
                          , p         =p
