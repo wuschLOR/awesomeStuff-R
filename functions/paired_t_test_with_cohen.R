@@ -4,7 +4,7 @@ library(reshape)
 library(lsr) # for cohen's d
 
 paired.t.test.with.cohen <- function (dfForComparsion) {
-
+  
   x=dfForComparsion[,1]
   y=dfForComparsion[,2]
   
@@ -19,24 +19,24 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
   names(t)<-NULL # namen löschen
   names(df)<-NULL # namen löschen
   
-#   output.df$t  <- t
-#   output.df$df <- df
-#   output.df$p  <- p
+  #   output.df$t  <- t
+  #   output.df$df <- df
+  #   output.df$p  <- p
   
   
-  #p output bauen
-  sig<-NULL
-  if(p> 0.05)  sig ='n.s.'
-  if(p< 0.05 ) sig ='*'
-  if(p< 0.01 ) sig ='**'
-  if(p< 0.001) sig ='***'
-  
-  # siglevel
-  siglevel<-NULL
-  if(p> 0.05)  siglevel ='>.05'
-  if(p< 0.05 ) siglevel ='<.05'
-  if(p< 0.01 ) siglevel ='<.01'
-  if(p< 0.001) siglevel ='<.001'
+#   #p output bauen
+#   sig<-NULL
+#   if(p> 0.05)  sig ='n.s.'
+#   if(p< 0.05 ) sig ='*'
+#   if(p< 0.01 ) sig ='**'
+#   if(p< 0.001) sig ='***'
+#   
+#   # siglevel
+#   siglevel<-NULL
+#   if(p> 0.05)  siglevel ='>.05'
+#   if(p< 0.05 ) siglevel ='<.05'
+#   if(p< 0.01 ) siglevel ='<.01'
+#   if(p< 0.001) siglevel ='<.001'
   
   
   
@@ -48,12 +48,12 @@ paired.t.test.with.cohen <- function (dfForComparsion) {
                          , gr2.name  =colnames(dfForComparsion)[2]
                          , gr2.m     =mean(y)
                          , gr2.sd    =sd(y)
-                         , gr2.se    =se(x)
+                         , gr2.se    =se(y)
                          , df        =df
                          , t         =t
                          , p         =p
-                         , sig       =sig
-                         , siglevel  =siglevel
+                         , sig       =getsiglevel.value(p)
+                         , siglevel  =getsiglevel.star(p)
                          , cohenD    =c
   )
   
