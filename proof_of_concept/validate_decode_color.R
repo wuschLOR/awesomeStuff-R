@@ -1,6 +1,13 @@
+## Startup #####################################################################
+# clear workspace
+rm(list = ls())
+
+# Libraries!
 library("ggplot2")
 
 
+
+## functions ###################################################################
 # validation
 decode_and_validate<- function(vector_of_values, vector_of_possible_values, vector_of_possible_lables ){
   
@@ -27,25 +34,47 @@ decode_and_validate<- function(vector_of_values, vector_of_possible_values, vect
 
 
 create_color_pallet <- function(vector_of_possible_values){
-  # check if something says missing
+  # bob ross wants to create a bar plot with lots of happy little bars.
   
+  # herefore he needs to know how many different happy bars should be there
   how_many_numbers = length(vector_of_possible_values)
   
+  # one of the little bars doesnt allways be there so he checkts if the grumpy 
+  # missing value wants to be in this picture
   if (99 %in% vector_of_possible_values)
     how_many_numbers = how_many_numbers - 1
   
-  plate <- scales::seq_gradient_pal("red", "green", "Lab")(seq(0,1,length.out=how_many_numbers))
+  # every happy little bar wants to be painted in a different color becaues 
+  # every bar is different but equaly important. Here the happy little bars want 
+  # to be drawn either green or red.
+  happy_little_bars_colors <- scales::seq_gradient_pal("red", "green", "Lab")(seq(0,1,length.out=how_many_numbers))
   
-  plate[how_many_numbers+1] <-  "#000000"
-  return(plate)
+  # oh dear lets check again if grumpy missing value bar wants to be in our 
+  # picture. If he wants to be here lets assign the grumpy missing value a 
+  # different color because he's very special
+  if (99 %in% vector_of_possible_values)
+    happy_little_bars_colors[how_many_numbers+1] <-  "#000000"
+  
+  
+  # now bob is taking his small detail brush dips it into some color and is 
+  # ready to create all those little happy bars. He even thinks about the the 
+  # NA bar that allways gets sad because it only there when somebody didn't want
+  # to share his thougts and rather kept his hopes and dreams by himselve.
+  # Allso if a happy little bar doesn't want to be there, he just paints the 
+  # happy little bars with the color he prommised to paint them
+  twleve_inch_brush <- scale_fill_manual(values = happy_little_bars_colors , na.value="#75747E" ,drop=F)
+  
+  return(twleve_inch_brush)
 }
 
+
+## promo code ##################################################################
 value <- c(0,1,2,3,4,5,6,7,8,9,10,99)
 label <- c('0','1','2','3','4','5','6','7','8','9','10','missing')
 
 
 
-values = round(runif(15, min=1, max=10))
+values = round(runif(10, min=0, max=11))
 values[1] = NA
 values[2] = 99
 values[3] = 11
@@ -76,9 +105,9 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
   
   #calculate the limits for the xaxis
   # you can use length(vector_of_possible_values) and check again for missing or not missing
-  # or you can just use the length of the color_pallet (create_color_pallet did that check before)
+  # or you can just use the length of the vector_of_possible_values (create_color_pallet did that check before)
   # +1.5 to compensate for NA
-  scale_x <- c(.5, length(color_pallet)+1.5)
+  scale_x <- c(.5, length(vector_of_possible_values)+1.5)
   
   
   gg <- ggplot(data = decode_and_validate_df) + 
@@ -88,7 +117,7 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
     scale_y_discrete(limits = c(1:scale_y_max)
                      , breaks = seq(0, scale_y_data, ceiling(scale_y_data/3))
     ) + 
-    scale_fill_manual(values = color_pallet , na.value="#75747E")+
+    color_pallet+
     geom_vline(xintercept = 11.5
                , color    = "#FFFFFF"
                , size     = 3, linetype = "solid")
@@ -107,3 +136,4 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
 
 
 decode_and_validate_df$values_factor
+
