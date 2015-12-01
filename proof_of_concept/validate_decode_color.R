@@ -67,6 +67,10 @@ create_color_pallet <- function(vector_of_possible_values){
   return(twleve_inch_brush)
 }
 
+seq_containing_min_and_max <- function(min, max, breaks){
+  
+  
+}
 
 ## promo code ##################################################################
 value <- c(0,1,2,3,4,5,6,7,8,9,10,99)
@@ -94,20 +98,30 @@ vector_of_possible_lables = label
 
 
 do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of_possible_lables){
+  # bob ross wants to create a beautiful litte picture with lots of 
+  # happy little bars  
   
-  # make the right color pallet
-  color_pallet = create_color_pallet(vector_of_possible_values)
+  # first he needs to know how big his canvas has to be. 
+  # The width of the painting will be determind by the possible happy bars
+  # he can use length(vector_of_possible_values) to create his guides
+  # bob also compensates for the NA bar +1.5 
+  scale_x <- c(0.5, length(vector_of_possible_values) + 1.5)
+
   
-  
-  # calculate the scale for the y axis
+  # getting to know the height of the painting is a little harder. 
   scale_y_data <- nrow(decode_and_validate_df)
   scale_y_max  <- scale_y_data + 2
   
-  #calculate the limits for the xaxis
-  # you can use length(vector_of_possible_values) and check again for missing or not missing
-  # or you can just use the length of the vector_of_possible_values (create_color_pallet did that check before)
-  # +1.5 to compensate for NA
-  scale_x <- c(.5, length(vector_of_possible_values)+1.5)
+  
+  
+  
+  # allso bob has to get to know all the bars who want to be on this picture and
+  # how they want to be drawn 
+  scale_fill_right = create_color_pallet(vector_of_possible_values)
+
+  
+  
+
   
   
   gg <- ggplot(data = decode_and_validate_df) + 
@@ -115,9 +129,10 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
     coord_cartesian(xlim = scale_x) + 
     scale_x_discrete(drop = FALSE) + 
     scale_y_discrete(limits = c(1:scale_y_max)
-                     , breaks = seq(0, scale_y_data, ceiling(scale_y_data/3))
+                     , breaks = 
+                       seq(0, scale_y_data, ceiling(scale_y_data/4))
     ) + 
-    color_pallet+
+    scale_fill_right+
     geom_vline(xintercept = 11.5
                , color    = "#FFFFFF"
                , size     = 3, linetype = "solid")
