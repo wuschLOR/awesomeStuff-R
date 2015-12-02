@@ -4,6 +4,7 @@ rm(list = ls())
 
 # Libraries!
 library("ggplot2")
+library('scales')
 
 
 
@@ -34,7 +35,7 @@ decode_and_validate<- function(vector_of_values, vector_of_possible_values, vect
 
 
 create_color_pallet <- function(vector_of_possible_values){
-  # bob ross wants to create a bar plot with lots of happy little bars.
+# bob ross wants to create a bar plot with lots of happy little bars.
   
   # herefore he needs to know how many different happy bars should be there
   how_many_numbers = length(vector_of_possible_values)
@@ -47,7 +48,7 @@ create_color_pallet <- function(vector_of_possible_values){
   # every happy little bar wants to be painted in a different color because 
   # every bar is different but equally important. Here the happy little bars want 
   # to be drawn either green or red.
-  happy_little_bars_colors <- scales::seq_gradient_pal("red", "green", "Lab")(seq(0,1,length.out=how_many_numbers))
+  happy_little_bars_colors <- scales::seq_gradient_pal("blue", "green", "Lab")(seq(0,1,length.out=how_many_numbers))
   
   # oh dear lets check again if grumpy missing value bar wants to be in our 
   # picture. If he wants to be here lets assign the grumpy missing value a 
@@ -67,13 +68,41 @@ create_color_pallet <- function(vector_of_possible_values){
   return(twleve_inch_brush)
 }
 
+
 seq_containing_min_and_max <- function(min, max, breaks){
-  
-    SEQENCE <- seq(min, max,max/(breaks+1))
-    SEQENCE[breaks+2] <-max
-    SEQENCE <- round(SEQENCE)
-    return(SEQENCE)
+# creates a seqence like this:
+# seq_containing_min_and_max(min = 0,max = 10, breaks = 2)
+# [1] 0  3  7 10
+# breaking points will be rounded to generate full numbers
+# 
+# careful when using small values:
+#     seq_containing_min_and_max(min = 0,max = 1, breaks = 2)
+#     [1] 0 0 1 1
+#     seq_containing_min_and_max(min = 0,max = 2, breaks = 2)
+#     [1] 0 1 1 2
+#     seq_containing_min_and_max(min = 0,max = 3, breaks = 2)
+#     [1] 0 1 2 3
+#     seq_containing_min_and_max(min = 0,max = 4, breaks = 2)
+#     [1] 0 1 3 4
+#     seq_containing_min_and_max(min = 0,max = 5, breaks = 2)
+#     [1] 0 2 3 5
     
+    # create normal sequence (min is allways there) wit one break more because 
+    # min counts as breakingpoint
+    SEQENCE <- seq(min, max,max/(breaks+1))
+
+    # add  the max point to the sequence
+    SEQENCE[breaks+2] <-max
+    
+    # round everything to get rid of decimal
+    SEQENCE <- round(SEQENCE)
+    
+    return(SEQENCE)
+}
+
+
+for (i in 1:2){
+    print(seq_containing_min_and_max(min = 0,max = i, breaks = 2))
 }
 
 ## promo code ##################################################################
@@ -82,7 +111,7 @@ label <- c('0','1','2','3','4','5','6','7','8','9','10','missing')
 
 
 
-values = round(runif(10, min=0, max=11))
+values = round(runif(1000, min=0, max=11))
 values[1] = NA
 values[2] = 99
 values[3] = 11
