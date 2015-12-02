@@ -69,7 +69,11 @@ create_color_pallet <- function(vector_of_possible_values){
 
 seq_containing_min_and_max <- function(min, max, breaks){
   
-  
+    SEQENCE <- seq(min, max,max/(breaks+1))
+    SEQENCE[breaks+2] <-max
+    SEQENCE <- round(SEQENCE)
+    return(SEQENCE)
+    
 }
 
 ## promo code ##################################################################
@@ -129,8 +133,7 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
     coord_cartesian(xlim = scale_x) + 
     scale_x_discrete(drop = FALSE) + 
     scale_y_discrete(limits = c(1:scale_y_max)
-                     , breaks = 
-                       seq(0, scale_y_data, ceiling(scale_y_data/4))
+                     , breaks = seq_containing_min_and_max(min = 0,max = scale_y_data, breaks = 2)
     ) + 
     scale_fill_right+
     geom_vline(xintercept = 11.5
