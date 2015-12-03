@@ -42,8 +42,9 @@ create_color_pallet <- function(vector_of_possible_values){
   
   # one of the little bars doesn't want to be there all the time he checks if 
   # the grumpy missing value wants to be in this picture
-  if (99 %in% vector_of_possible_values)
+  if (99 %in% vector_of_possible_values){
     how_many_numbers = how_many_numbers - 1
+  }
   
   # every happy little bar wants to be painted in a different color because 
   # every bar is different but equally important. Here the happy little bars want 
@@ -111,7 +112,7 @@ label <- c('0','1','2','3','4','5','6','7','8','9','10','missing')
 
 
 
-values = round(runif(1000, min=0, max=11))
+values = round(runif(10, min=0, max=11))
 values[1] = NA
 values[2] = 99
 values[3] = 11
@@ -140,6 +141,10 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
   # bob also compensates for the NA bar +1.5 
   scale_x <- c(0.5, length(vector_of_possible_values) + 1.5)
 
+  xintercept_line_position <- length(vector_of_possible_values) + .5
+  if (99 %in% vector_of_possible_values){
+      xintercept_line_position = xintercept_line_position - 1
+  }
   
   # getting to know the height of the painting is a little harder. 
   scale_y_datarows <- nrow(decode_and_validate_df)
@@ -158,16 +163,18 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
   
   
   gg <- ggplot(data = decode_and_validate_df) + 
+    geom_vline(xintercept = xintercept_line_position
+             , color    = "#FFFFFF"
+             , size     = 3
+             , linetype = "solid")+
     geom_bar(aes(x = values_factor, fill = values_factor))+
     coord_cartesian(xlim = scale_x) + 
     scale_x_discrete(drop = FALSE) + 
     scale_y_discrete(limits = c(1:scale_y_max)
                      , breaks = seq_containing_min_and_max(min = 0,max = scale_y_datarows, breaks = 1)
     ) + 
-    scale_fill_right+
-    geom_vline(xintercept = 11.5
-               , color    = "#FFFFFF"
-               , size     = 3, linetype = "solid")
+    scale_fill_right
+
   
   
   print(gg)
