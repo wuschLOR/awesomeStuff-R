@@ -101,9 +101,9 @@ seq_containing_min_and_max <- function(min, max, breaks){
 }
 
 
-for (i in 1:2){
-    print(seq_containing_min_and_max(min = 0,max = i, breaks = 2))
-}
+# for (i in 1:9){
+#     print(seq_containing_min_and_max(min = 0,max = i, breaks = 2))
+# }
 
 ## promo code ##################################################################
 value <- c(0,1,2,3,4,5,6,7,8,9,10,99)
@@ -142,8 +142,8 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
 
   
   # getting to know the height of the painting is a little harder. 
-  scale_y_data <- nrow(decode_and_validate_df)
-  scale_y_max  <- scale_y_data + 2
+  scale_y_datarows <- nrow(decode_and_validate_df)
+  scale_y_max  <- scale_y_datarows *1.2 # to get space for tiangle stuff
   
   
   
@@ -162,7 +162,7 @@ do_plot <- function(decode_and_validate_df, vector_of_possible_values, vector_of
     coord_cartesian(xlim = scale_x) + 
     scale_x_discrete(drop = FALSE) + 
     scale_y_discrete(limits = c(1:scale_y_max)
-                     , breaks = seq_containing_min_and_max(min = 0,max = scale_y_data, breaks = 2)
+                     , breaks = seq_containing_min_and_max(min = 0,max = scale_y_datarows, breaks = 1)
     ) + 
     scale_fill_right+
     geom_vline(xintercept = 11.5
